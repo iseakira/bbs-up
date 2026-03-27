@@ -35,6 +35,7 @@ export async function signup(formData: FormData) {
     });
 
     await userRepository.save(newUser);
+    redirect('/');
   } catch (e) {
     console.error(e);
     return { error: 'ユーザー登録中にエラーが発生しました' };
