@@ -1,6 +1,6 @@
 'use client';
 import { useState } from 'react';
-import { signup } from '@actions/auth';
+import { signup } from '../../actions/auth';
 import Link from 'next/link';
 
 export default function SignupPage() {
