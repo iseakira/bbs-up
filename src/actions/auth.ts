@@ -34,12 +34,12 @@ export async function signup(formData: FormData) {
       password: hashedPassword,
     });
 
-    await userRepository.save(newUser);
-    redirect('/');
+    console.log(await userRepository.save(newUser));
   } catch (e) {
     console.error(e);
     return { error: 'ユーザー登録中にエラーが発生しました' };
   }
+  redirect('/');
 }
 
 // export async function login(formData: FormData) {
