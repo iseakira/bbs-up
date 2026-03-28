@@ -1,11 +1,17 @@
 import Link from 'next/link';
 import PostDetail from './PostDetail';
+import { Suspense } from 'react';
+import Loader from '@/app/Loader';
 
-export default function PostDetailPage() {
+export default function PostDetailPage({
+  params,
+}: {
+  params: Promise<{ id: string }>;
+}) {
   return (
-    <div className='container' style={{ maxWidth: '800px', marginTop: '30px' }}>
+    <div className="container" style={{ maxWidth: '800px', marginTop: '30px' }}>
       <Link
-        href='#'
+        href="#"
         style={{
           display: 'inline-block',
           marginBottom: '20px',
@@ -14,8 +20,9 @@ export default function PostDetailPage() {
       >
         &larr; 一覧に戻る
       </Link>
-
-      <PostDetail />
+      <Suspense fallback={<Loader />}>
+        <PostDetail params={params} />
+      </Suspense>
     </div>
   );
 }

@@ -69,6 +69,8 @@ export async function getPosts() {
 }
 
 export async function getPost(id: number) {
+  'use cache';
+  cacheTag(`post-${id}`);
   const postRepository = await getRepository(Post);
 
   const post = await postRepository.findOne({
@@ -86,6 +88,11 @@ export async function getPost(id: number) {
 }
 
 export async function deletePost(id: number) {
+  const session = await verifySession();
+
+  if (!session || !session.userId) {
+    return { error: 'ログインしてください' };
+  }
   const postRepository = await getRepository(Post);
   const post = await postRepository.findOne({
     where: { id },
@@ -102,4 +109,8 @@ export async function deletePost(id: number) {
   }
 
   await postRepository.remove(post);
+
+  revalidateTag('posts', 'max');
+  revalidateTag(`post-${id}`, 'max');
+  redirect('/');
 }
