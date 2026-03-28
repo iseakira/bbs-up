@@ -1,12 +1,15 @@
 import Link from 'next/link';
+import { verifySession } from '@/utils/session';
+import { logout } from '@/actions/auth';
 
-export default function Header() {
+export default async function Header() {
+  const session = await verifySession();
   return (
     <header
       style={{ backgroundColor: '#333', color: '#fff', padding: '15px 0' }}
     >
       <div
-        className='container'
+        className="container"
         style={{
           display: 'flex',
           justifyContent: 'space-between',
@@ -14,17 +17,18 @@ export default function Header() {
         }}
       >
         <h1>
-          <Link href='#' style={{ fontSize: '24px', fontWeight: 'bold' }}>
+          <Link href="#" style={{ fontSize: '24px', fontWeight: 'bold' }}>
             BBS App
           </Link>
         </h1>
-        {/* <nav style={{ display: 'flex', gap: '20px', alignItems: 'center' }}>
-            <Link href='#' style={{ fontWeight: 'bold' }}>
+        {session && session.userId && (
+          <nav style={{ display: 'flex', gap: '20px', alignItems: 'center' }}>
+            <Link href="#" style={{ fontWeight: 'bold' }}>
               投稿する
             </Link>
-            <form>
+            <form action={logout}>
               <button
-                type='submit'
+                type="submit"
                 style={{
                   backgroundColor: 'transparent',
                   border: 'none',
@@ -37,7 +41,8 @@ export default function Header() {
                 ログアウト
               </button>
             </form>
-          </nav> */}
+          </nav>
+        )}
       </div>
     </header>
   );
